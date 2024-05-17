@@ -14,6 +14,11 @@
     ansible.builtin.user:
       name: roboshop
 
+  - name: Recursively remove app directory
+    ansible.builtin.file:
+      path: /app
+      state: absent
+
   - name: create app directory
     ansible.builtin.file:
       path: /tmp
@@ -66,7 +71,7 @@
 
   - name: load catalogue data
     ansible.builtin.command: mongo --host mongodb.raghudevops.online < /app/schema/catalogue.js
-    when: product_count.stdout == 0
+    when: product_count.stdout == "0" #keep double quotes
 
   - name: start and enable mongodb
     ansible.builtin.service:
